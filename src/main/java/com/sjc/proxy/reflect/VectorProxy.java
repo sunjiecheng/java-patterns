@@ -49,5 +49,6 @@ public class VectorProxy implements InvocationHandler {
 
         v.add("New");
         v.add("York");
+        System.out.println(v.get(0));
     }
 }
