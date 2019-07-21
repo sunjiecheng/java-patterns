@@ -1,5 +1,10 @@
 package com.sjc.proxy.reflect;
 
+import sun.misc.ProxyGenerator;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Method;
@@ -46,9 +51,23 @@ public class VectorProxy implements InvocationHandler {
         List v = null;
 
         v = (List) factory(new Vector(10));
-
+        writeProxyToFile();
         v.add("New");
         v.add("York");
+
         System.out.println(v.get(0));
+    }
+
+    public static void writeProxyToFile() {
+        byte[] classFile = ProxyGenerator.generateProxyClass("$Proxy0", Vector.class.getInterfaces());
+        String path = "proxy.class";
+        try(FileOutputStream fos = new FileOutputStream(path)) {
+            fos.write(classFile);
+            fos.flush();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
